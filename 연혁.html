@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>연혁</title>
+
+    <style>
+        div {
+            border: 0px solid black;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .history-container {
+            width: 1300px;
+            margin: auto;
+        }
+
+        .explain-box {
+            width: 1300px;
+            display: flex;
+            position: fixed;
+            justify-content: space-between;
+            background-color: #DDDDDD;
+        }
+
+        .homep {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .homepImg {
+            width: 100px;
+            height: 50px;
+        }
+
+        .homepNm {
+            text-decoration: none;
+            font-size: 20px;
+            color: black;
+        }
+
+        .tag {
+            display: flex;
+            align-items: center;
+        }
+
+        .drop-box {
+            position: relative;
+            padding: 20px;
+        }
+
+        .drop-box>a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+            font-size: 20px;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .dropdown {
+            visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, 0%);
+            background-color: white;
+            padding: 15px;
+
+            width: 110px;
+            border: 1px solid #EEEEEE;
+            box-shadow: 2px 2px 2px 2px #DDDDDD;
+        }
+
+        .dropdown>a {
+            text-decoration: none;
+        }
+
+        .drop-box:hover>.dropdown {
+            visibility: visible;
+        }
+
+        .login-box {
+            width: 10%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .head {
+            height: 100px;
+        }
+
+        #mainImg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .title {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px;
+            border-bottom: 1px solid #DDDDDD;
+        }
+
+        .suv-title {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: gray;
+        }
+
+        .suv-title>div>a {
+            text-decoration: none;
+            color: gray;
+        }
+
+        #mainImg {
+            margin-right: 5px;
+        }
+
+        .dott {
+            width: 8px;
+            height: 8px;
+            border: 1px solid #BFBFBF;
+            border-radius: 5px;
+            background-color: #BFBFBF;
+        }
+
+        .hisDetail {
+            display: flex;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #DDDDDD;
+            padding: 30px
+        }
+
+        .date {
+            padding: 30px;
+        }
+
+        .dateBefore {
+            color: #09925d;
+            font-size: 22px;
+        }
+
+        .dateAfter {
+            color: #ED5824;
+            font-size: 22px;
+        }
+
+        .his-detail-content {
+            margin-top: 30px;
+            width: 100% - 100px;
+        }
+
+        .hisContent {
+            display: flex;
+            align-items: center;
+            padding: 5px;
+        }
+
+        .make-date {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100px;
+        }
+
+        .hisContent>span:nth-child(2) {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="history-container">
+        <div class="explain-box">
+            <div class="homep">
+                <img class="homepImg" src="./logo.png" alt="">
+                <a class="homepNm" href="./메인화면.html">공용도서관</a>
+            </div>
+
+            <div class="tag">
+                <div class="drop-box">
+                    <a href="#">도서관 안내</a>
+                    <div class="dropdown">
+                        <a href="./인사말.html">인사말</a>
+                        <a href="./연혁.html">연혁</a>
+                        <a href="./찾아오시는길.html">찾아오시는 길</a>
+                    </div>
+                </div>
+                <div class="drop-box">
+                    <a href="#">다양한 활동들</a>
+                    <div class="dropdown">
+                        <a href="./주변도서관.html">내 주변 도서관</a>
+                        <a href="./독후감작성.html">독후감 작성</a>
+                    </div>
+                </div>
+                <div class="drop-box">
+                    <a href="#">자료실</a>
+                    <div class="dropdown">
+                        <a href="./자료실.html">책 검색</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="login-box">
+                <div>
+                    <a id="goLogin" href="./로그인.html">로그인/회원가입</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="head"></div>
+        <div class="title">
+            <h3>연혁</h3>
+            <div class="suv-title">
+                <a href="./메인화면.html">
+                    <img id="mainImg" src="./home.png" alt="">
+                </a>
+                <div>
+                    <span>></span>
+                    <a href="./인사말.html">도서관 안내</a>
+                </div>
+                <div>
+                    <span>></span>
+                    <a href="./연혁.html">연혁</a>
+                </div>
+            </div>
+        </div>
+        <div class="history">
+            <div class="hisDetail">
+                <h3 class="date">
+                    <span class="dateBefore">2021</span>
+                    ~
+                    <span class="dateAfter">현재</span>
+                </h3>
+                <div class="his-detail-content">
+                    <div class="hisContent">
+                        <span class="make-date">
+                            2021.01.12
+                            <div class="dott"></div>
+                        </span>
+                        <span>제2자료실 재개실</span>
+                    </div>
+                    <div class="hisContent">
+                        <span class="make-date">
+                            2021.04.27
+                            <div class="dott"></div>
+                        </span>
+                        <span>디지털 창작실 개실</span>
+                    </div>
+                    <div class="hisContent">
+                        <span class="make-date">
+                            2021.12.17
+                            <div class="dott"></div>
+                        </span>
+                        <span>미디어 제작스튜디오 설치</span>
+                    </div>
+                    <div class="hisContent">
+                        <span class="make-date">
+                            2022.04.05
+                            <div class="dott"></div>
+                        </span>
+                        <span>스마트도서관(중앙로역) 개관</span>
+                    </div>
+                    <div class="hisContent">
+                        <span class="make-date">
+                            2022.11.30
+                            <div class="dott"></div>
+                        </span>
+                        <span>미로미로원(迷路美路園) 준공</span>
+                    </div>
+                    <div class="hisContent">
+                        <span class="make-date">
+                            2022.12.14
+                            <div class="dott"></div>
+                        </span>
+                        <span>주차빌딩 준공</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hisDetail">
+                <h3 class="date">
+                    <span class="dateBefore">2010</span>
+                    ~
+                    <span class="dateAfter">2020</span>
+                </h3>
+                <div class="his-detail-content">
+                    <div class="hisContent">
+                        <span class="make-date">
+                            2020.12.22
+                            <div class="dott"></div>
+                        </span>
+                        <span>북카페형 열람실(제2자료실 및 3층 열람실) 리모델링</span>
+                    </div>
+                    <div class="hisContent">
+                        <span class="make-date">
+                            2017.06.30
+                            <div class="dott"></div>
+                        </span>
+                        <span>어린이독서담당, 디지털자료담당 신설(조례 제3079호)</span>
+                    </div>
+                    <div class="hisContent">
+                        <span class="make-date">
+                            2011.06.15
+                            <div class="dott"></div>
+                        </span>
+                        <span>본관 노후배관 교체공사 완료</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hisDetail">
+                <h3 class="date">
+                    <span class="dateBefore">2000</span>
+                    ~
+                    <span class="dateAfter">2010</span>
+                </h3>
+                <div class="his-detail-content">
+                    <div class="hisContent">
+                        <span class="make-date">
+                            2010.12.17
+                            <div class="dott"></div>
+                        </span>
+                        <span>다문화자료실 설치(*제3자료실)</span>
+                    </div>
+                    <div class="hisContent">
+                        <span class="make-date">
+                            2008.11.20
+                            <div class="dott"></div>
+                        </span>
+                        <span>하늘도서관 개관</span>
+                    </div>
+                    <div class="hisContent">
+                        <span class="make-date">
+                            2001.01.02
+                            <div class="dott"></div>
+                        </span>
+                        <span>대전지역 공용도서관(9개관) 도서대출카드공유제 실시</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hisDetail">
+                <h3 class="date">
+                    <span class="dateBefore">1990</span>
+                    ~
+                    <span class="dateAfter">1999</span>
+                </h3>
+                <div class="his-detail-content">
+                    <div class="hisContent">
+                        <span class="make-date">
+                            1999.12.01
+                            <div class="dott"></div>
+                        </span>
+                        <span>1999년 문화기반시설 관리운영 최우수기관 수상(문화관광부장관)</span>
+                    </div>
+                    <div class="hisContent">
+                        <span class="make-date">
+                            1992.10.12
+                            <div class="dott"></div>
+                        </span>
+                        <span>이동도서관 운영</span>
+                    </div>
+                    <div class="hisContent">
+                        <span class="make-date">
+                            1991.04.10
+                            <div class="dott"></div>
+                        </span>
+                        <span>별관 건립 착공</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hisDetail">
+                <h3 class="date">
+                    <span class="dateBefore">1984</span>
+                    ~
+                    <span class="dateAfter">1989</span>
+                </h3>
+                <div class="his-detail-content">
+                    <div class="hisContent">
+                        <span class="make-date">
+                            1990.06.30
+                            <div class="dott"></div>
+                        </span>
+                        <span>본관 전면 개실(시각장애인실. 마이크로필름실 개실)</span>
+                    </div>
+                    <div class="hisContent">
+                        <span class="make-date">
+                            1989.12.20
+                            <div class="dott"></div>
+                        </span>
+                        <span>본관 준공, 도서관 개관(대출실, 참고열람실, 정기간행물실, 아동열람실, 향토자료실 개실)</span>
+                    </div>
+                    <div class="hisContent">
+                        <span class="make-date">
+                            1984.12.11
+                            <div class="dott"></div>
+                        </span>
+                        <span>한밭도서관 건립계획 확정(충청남도)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let v_login = JSON.parse(sessionStorage.getItem('login'));
+
+        let v_goLogin = document.getElementById('goLogin');
+
+        if (v_login) {
+            v_goLogin.innerHTML = "로그아웃";
+            v_goLogin.href = './로그아웃.html';
+
+            v_goLogin.innerHTML = v_login['memNickNm'] + ' 님';
+
+            document.getElementById('goLogin').addEventListener('click', () => {
+                v_goLogin.innerHTML = "로그인"
+                v_goLogin.href = "./로그인.html"
+
+                sessionStorage.removeItem('login')
+            });
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공용도서관 로그인</title>
+
+    <!-- firebase 라이브러리 CDN 링크로 가져오기 -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+    <!-- firebase 개인 SDK 가져오기 -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDfVwL3nAnUhrjCVLIEFs5UDYtZVmZBnVA",
+            authDomain: "fir-study-dc5da.firebaseapp.com",
+            projectId: "fir-study-dc5da",
+            storageBucket: "fir-study-dc5da.appspot.com",
+            messagingSenderId: "434989319675",
+            appId: "1:434989319675:web:023808d5286aabe7db775e",
+            measurementId: "G-7Q9DPPXMLN"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <style>
+
+        .login-container {
+            width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: auto;
+        }
+
+        .explain-box {
+            width: 1300px;
+            display: flex;
+            position: fixed;
+            justify-content: space-between;
+            background-color: #DDDDDD;
+        }
+
+        .homep {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .homepImg {
+            width: 100px;
+            height: 50px;
+        }
+
+        .homepNm {
+            text-decoration: none;
+            font-size: 20px;
+            color: black;
+        }
+
+        .tag {
+            display: flex;
+            align-items: center;
+        }
+
+        .drop-box {
+            position: relative;
+            padding: 20px;
+        }
+
+        .drop-box>a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+            font-size: 20px;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .dropdown {
+            visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, 0%);
+            background-color: white;
+            padding: 15px;
+
+            width: 110px;
+            border: 1px solid #EEEEEE;
+            box-shadow: 2px 2px 2px 2px #DDDDDD;
+        }
+
+        .dropdown>a {
+            text-decoration: none;
+        }
+
+        .drop-box:hover>.dropdown {
+            visibility: visible;
+        }
+
+        .head {
+            height: 100px;
+        }
+
+        #logoImg {
+            width: 200px;
+        }
+
+        .input-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .id-box {
+            margin-bottom: 10px;
+        }
+
+        #input-id {
+            width: 250px;
+            height: 30px;
+        }
+
+        #input-pw {
+            width: 250px;
+            height: 30px;
+        }
+
+        #loginBtn {
+            width: 250px;
+            height: 30px;
+            background-color: blue;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            border: 0;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="explain-box">
+            <div class="homep">
+                <img class="homepImg" src="./logo.png" alt="">
+                <a class="homepNm" href="./메인화면.html">공용도서관</a>
+            </div>
+
+            <div class="tag">
+                <div class="drop-box">
+                    <a href="#">도서관 안내</a>
+                    <div class="dropdown">
+                        <a href="./인사말.html">인사말</a>
+                        <a href="./연혁.html">연혁</a>
+                        <a href="./찾아오시는길.html">찾아오시는 길</a>
+                    </div>
+                </div>
+                <div class="drop-box">
+                    <a href="#">다양한 활동들</a>
+                    <div class="dropdown">
+                        <a href="./주변도서관.html">내 주변 도서관</a>
+                        <a href="./독후감작성.html">독후감 작성</a>
+                    </div>
+                </div>
+                <div class="drop-box">
+                    <a href="#">자료실</a>
+                    <div class="dropdown">
+                        <a href="./자료실.html">책 검색</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="head"></div>
+
+        <div>
+            <img id="logoImg" src="./logo.png" alt="">
+        </div>
+        <div class="input-box">
+            <div class="id-box">
+                <input type="text" id="input-id" placeholder="아이디">
+            </div>
+            <div>
+                <input type="password" id="input-pw" placeholder="비밀번호">
+            </div>
+        </div>
+        <div class="btnBox">
+            <div>
+                <button id="loginBtn">로그인</button>
+            </div>
+            <div>
+                <a href="./회원가입.html">회원가입 하러가기</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const db = firebase.firestore();
+
+        document.getElementById('loginBtn').addEventListener('click', () => {
+            v_inputId = document.getElementById('input-id').value;
+            v_inputPw = document.getElementById('input-pw').value;
+
+            db.collection('Member').doc(v_inputId).get()
+                .then((result) => {
+                    // result에 DB로부터 가져온 데이터가 담겨있음
+                    console.log(result);
+
+                    // result.data() 하면 데이터 항목만 JSON 객체로 리턴
+                    let v_data = result.data();
+                    console.log(v_data); // 존재하지 않는 아이디 입력시 undefined 뜸
+
+                    if (!v_data) {
+                        // 확인 누르기전까지 코드가 멈춰있음
+                        alert('유효하지 않은 아이디 입니다.')
+                        return;
+                    }
+
+                    // v_data 의 memPw 값과 현재 페이지에서 입력받은 비밀번호가 일치하는지 체크
+                    if (v_data['memPw'] == v_inputPw) {
+                        // 로그인 성공
+                        // 로그인 성공 상태를 어디에 저장할까?
+                        // Authentication 을 이용한 로그인 시 로그인정보가
+                        // Authentication 에 기록됨
+                        // 브라우저에는 localStorage가 있으며
+                        // sessionStorage가 잇다.
+                        // sessionStorage에 저장된 데이터는 서버를 재기동하거나
+                        // 브라우저를 종료하면 사라짐
+                        // sessionStorage 사용법은 localStorage와 같다.
+                        sessionStorage.setItem('login', JSON.stringify(v_data));
+
+                        // 홈화면으로 이동 (이후 뒤로가기를 해도 로그인페이지가 열리지 않게)
+                        // location.href = "./index.html";
+                        location.replace("./메인화면.html");
+                    } else {
+                        alert('비밀번호 틀림')
+                    }
+                })
+                .catch((error) => {
+                    console.log('에러발생', error)
+                });
+        })
+    </script>
+
+</body>
+
+</html>

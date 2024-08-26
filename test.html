@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/x2js/1.2.0/xml2json.min.js"
+        integrity="sha512-HX+/SvM7094YZEKOCtG9EyjRYvK8dKlFhdYAnVCGNxMkA59BZNSZTZrqdDlLXp0O6/NjDb1uKnmutUeuzHb3iQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+<body>
+    <button id="reqBtn">요청</button>
+
+    <script>
+        let pageNo = 1;
+        let v_array = [];
+
+        document.getElementById('reqBtn').addEventListener('click', () => {
+            f_reqData();
+        })
+
+        /* Javascript Sample*/
+        function f_reqData() {
+            var xhr = new XMLHttpRequest();
+            var url = 'https://www.nl.go.kr/NL/search/openApi/search.do'; /*URL*/
+            var queryParams = '?' + encodeURIComponent('key') + '=' + '8e6b9e3471b26365fa7f4bac4487a9830021ebebe8470b4bb1568a046a108fc1'; /*서비스키*/
+            queryParams += '&' + encodeURIComponent('pageSize') + '=' + 100 // encodeURIComponent('세션당 요청레코드수'); /*세션당 요청레코드수*/
+            queryParams += '&' + encodeURIComponent('pageNum') + '=' + pageNo; /*페이지수*/
+            queryParams += '&' + encodeURIComponent('kwd') + '=' + encodeURIComponent('토지'); /*검색어*/
+
+            xhr.open('GET', url + queryParams);
+
+            xhr.onload = function(){
+                console.log(xhr)
+                console.log(xhr.response)
+                
+                let v_x2js = new X2JS();
+                console.log(v_x2js)
+
+                v_json = v_x2js.xml_str2json(xhr.response)
+                console.log(v_json)
+                console.log(v_json['root'])
+                console.log(v_json['root']['result'])
+                console.log(v_json['root']['result']['item'])
+                console.log(v_json['root']['result']['item']['0'])
+                console.log(v_json['root']['result']['item']['0']['org_link'])
+                
+                // let v_json = JSON.parse(xhr.response)
+                // console.log(v_json)
+                for(let i = 0 ; i < 100; i++){
+                    // console.log(v_json['root']['result']['item'][i]['image_url'])
+                    if(v_json['root']['result']['item'][i]['image_url'].length>22){
+                        console.log(v_json['root']['result']['item'][i]['image_url'])
+                    }
+                }
+            }
+
+            xhr.send();
+
+
+
+        }
+
+    </script>
+</body>
+
+</html>

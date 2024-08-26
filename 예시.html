@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 주변 도서관</title>
+
+    <!-- img나 script의 src 내용은 브라우저에서 실행될때 별도로 요청 후 적용된다. -->
+    <script src="../resources/js/myjs.js"></script>
+    <script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ddf5165e3f6457e49c987eb7436e1a8e"></script>
+
+    <style>
+        .lib-container {
+            width: 1300px;
+            margin: auto;
+        }
+
+        .explain-box {
+            width: 1300px;
+            display: flex;
+            position: fixed;
+            justify-content: space-between;
+            background-color: #DDDDDD;
+        }
+
+        .homep {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .homepImg {
+            width: 100px;
+            height: 50px;
+        }
+
+        .homepNm {
+            text-decoration: none;
+            font-size: 20px;
+            color: black;
+        }
+
+        .tag {
+            display: flex;
+            align-items: center;
+        }
+
+        .drop-box {
+            position: relative;
+            padding: 20px;
+        }
+
+        .drop-box>a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+            font-size: 20px;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .dropdown {
+            visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, 0%);
+            background-color: white;
+            padding: 15px;
+
+            width: 110px;
+            border: 1px solid #EEEEEE;
+            box-shadow: 2px 2px 2px 2px #DDDDDD;
+        }
+
+        .dropdown>a {
+            text-decoration: none;
+        }
+
+        .drop-box:hover>.dropdown {
+            visibility: visible;
+        }
+
+        .login-box {
+            width: 10%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .head {
+            height: 100px;
+        }
+
+        .title {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px;
+            border-bottom: 1px solid #DDDDDD;
+        }
+
+        .suv-title {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: gray;
+        }
+
+        .suv-title>div>a {
+            text-decoration: none;
+            color: gray;
+        }
+
+        #mainImg {
+            margin-right: 5px;
+            width: 20px;
+        }
+
+        .card {
+            width: calc(100% / 3 - 50px);
+            height: 400px;
+            border: 1px solid black;
+            margin-bottom: 50px;
+            cursor: pointer;
+        }
+
+        .card-top {
+            height: 70%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+        }
+
+        .card-top>img {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .card-bottom {
+            height: 30%;
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lib-box {
+            border: 1px solid black;
+
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="lib-container">
+        <div class="explain-box">
+            <div class="homep">
+                <img class="homepImg" src="./logo.png" alt="">
+                <a class="homepNm" href="#">공용도서관</a>
+            </div>
+
+            <div class="tag">
+                <div class="drop-box">
+                    <a href="#">도서관 안내</a>
+                    <div class="dropdown">
+                        <a href="./인사말.html">인사말</a>
+                        <a href="./연혁.html">연혁</a>
+                        <a href="./찾아오시는길.html">찾아오시는 길</a>
+                    </div>
+                </div>
+                <div class="drop-box">
+                    <a href="#">다양한 책들</a>
+                    <div class="dropdown">
+                        <a href="./주변도서관.html">내 주변 도서관</a>
+                        <a href="./독후감작성.html">독후감 작성</a>
+                    </div>
+                </div>
+                <div class="drop-box">
+                    <a href="#">자료실</a>
+                    <div class="dropdown">
+                        <a href="./자료실.html">책 검색</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="login-box">
+                <div>
+                    <a id="goLogin" href="./로그인.html">로그인/회원가입</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="head"></div>
+
+        <div class="title">
+            <h3>다양한 활동들</h3>
+            <div class="suv-title">
+                <a href="./메인화면.html">
+                    <img id="mainImg" src="./home.png" alt="">
+                </a>
+                <div>
+                    <span>></span>
+                    <a href="./독후감작성.html">도서관 활동들</a>
+                </div>
+                <div>
+                    <span>></span>
+                    <a href="./주변도서관.html">내 주변 도서관</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="data-search">
+            <h2>자료 검색</h2>
+        </div>
+        <div>
+            <div>
+                <div>
+                    <select id="selectSearch">
+                        <option value="all">===선택하세요===</option>
+                        <option value="region">지역</option>
+                        <option value="libNm">도서관 이름</option>
+                    </select>
+                </div>
+                <div>
+                    <input id="inputSearch" type="text" placeholder="검색어를 입력하세요">
+                    <button id="search">검색</button>
+                </div>
+            </div>
+            <div class="lib-box"></div>
+            <div></div>
+        </div>
+    </div>
+
+    <script>
+        let v_login = JSON.parse(sessionStorage.getItem('login'));
+
+        let v_goLogin = document.getElementById('goLogin');
+
+        if (v_login) {
+            v_goLogin.innerHTML = "로그아웃";
+            v_goLogin.href = './로그아웃.html';
+
+            v_goLogin.innerHTML = v_login['memNickNm'] + ' 님';
+
+            document.getElementById('goLogin').addEventListener('click', () => {
+                v_goLogin.innerHTML = "로그인"
+                v_goLogin.href = "./로그인.html"
+
+                sessionStorage.removeItem('login')
+            });
+        }
+
+        let v_ajax = new XMLHttpRequest();
+
+        v_ajax.open("GET", "./전국도서관표준데이터.json");
+
+        let v_records = null;
+
+        // console.log(libList)
+
+
+        v_ajax.onload = function () {
+            let v_json = JSON.parse(v_ajax.response);
+            console.log(v_json)
+            console.log(v_json['records'])
+            console.log(v_json['records']['0'])
+            console.log(v_json['records']['0']['도서관명'])
+
+            let v_lib = v_json['records']
+
+            console.log(v_lib);
+
+            let v_libBox = document.querySelector('.lib-box');
+
+            let startIdx = 0;
+            let endIdx = 15;
+
+            let v_useLib = [];
+
+            for (let lib of v_lib) {
+                if (lib["제공기관코드"]) {
+                    v_useLib.push(lib);
+                }
+            }
+
+
+            console.log(v_useLib);
+
+            for (let i = startIdx; i < endIdx; i++) {
+                console.log(v_useLib[i]['위도'])
+
+                var container = document.getElementById('map');
+                var options = {
+                    center: new kakao.maps.LatLng(v_useLib[i]['위도'], v_useLib[i]['경도']),
+                    level: 1
+                };
+
+                var map = new kakao.maps.Map(container, options);
+
+                var markerPosition = new kakao.maps.LatLng(v_useLib[i]['위도'], v_useLib[i]['경도']);
+
+                var marker = new kakao.maps.Marker({
+                    position: markerPosition
+                });
+
+                marker.setMap(map);
+
+                let v_card = '<div onclick="f_detail()" class="card">';
+                v_card += '<input type="hidden" value="' + v_useLib[i]['제공기관코드'] + '" />';
+                v_card += ' <div class="card-top">';
+                v_card += '     <div id="map" style="width:500px;height:400px;"></div>';
+                v_card += ' </div>';
+                v_card += ' <div class="card-bottom">';
+                v_card += v_useLib[i]['도서관명'];
+                v_card += '<br>'
+                v_card += '도로명주소:' + v_useLib[i]['소재지도로명주소']
+                v_card += ' </div>';
+                v_card += '</div>';
+
+                v_libBox.innerHTML += v_card;
+
+            };
+
+            startIdx = endIdx;
+            endIdx = startIdx + 9;
+
+            onscroll = () => {
+                let v_docHeight = document.documentElement.scrollHeight; // 전체 문서 높이
+                let v_windowHeight = document.documentElement.clientHeight; // 브라우저 창의 높이
+                let v_scrollTop = document.documentElement.scrollTop; // 스크롤바의 상단 위치
+
+                // winHeight + scrollTop 의 수치가 docHeight 에 근접할수록 스크롤바는 하단에 위치
+                console.log('docHeight', v_docHeight);
+                console.log('winHeight', v_windowHeight);
+                console.log('scrollTop', v_scrollTop);
+
+                if (v_windowHeight + v_scrollTop >= v_docHeight * 0.9) {
+
+                    if (startIdx >= v_useLib.length) {
+                        return
+                    }
+                    var container = document.getElementById('map');
+                    var options = {
+                        center: new kakao.maps.LatLng(v_useLib[i]['위도'], v_useLib[i]['경도']),
+                        level: 1
+                    };
+
+                    var map = new kakao.maps.Map(container, options);
+
+                    var markerPosition = new kakao.maps.LatLng(v_useLib[i]['위도'], v_useLib[i]['경도']);
+
+                    var marker = new kakao.maps.Marker({
+                        position: markerPosition
+                    });
+
+                    marker.setMap(map);
+
+                    for (let i = startIdx; i < endIdx; i++) {
+                        let v_card = '<div onclick="f_detail()" class="card">';
+                        v_card += '<input type="hidden" value="' + v_useLib[i]['제공기관코드'] + '" />';
+                        v_card += ' <div class="card-top">';
+                        v_card += '     <div id="map" style="width:500px;height:400px;"></div>';
+                        v_card += ' </div>';
+                        v_card += ' <div class="card-bottom">';
+                        v_card += v_useLib[i]['도서관명'];
+                        v_card += '<br>'
+                        v_card += '도로명주소:' + v_useLib[i]['소재지도로명주소']
+                        v_card += ' </div>';
+                        v_card += '</div>';
+
+                        v_libBox.innerHTML += v_card;
+                    }
+
+                    startIdx = endIdx;
+                    endIdx = startIdx + 9;
+
+                    // endIdx 가 배열의 length를 넘어가면 조정
+                    if (endIdx > v_useLib.length) {
+                        endIdx = v_useLib.length;
+                    }
+                }
+            };
+
+
+        }
+
+        v_ajax.send();
+
+    </script>
+
+
+</body>
+
+</html>

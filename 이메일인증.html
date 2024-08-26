@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이메일 인증</title>
+
+    <!-- firebase 라이브러리 CDN 링크로 가져오기 -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+    <!-- firebase 개인 SDK 가져오기 -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDfVwL3nAnUhrjCVLIEFs5UDYtZVmZBnVA",
+            authDomain: "fir-study-dc5da.firebaseapp.com",
+            projectId: "fir-study-dc5da",
+            storageBucket: "fir-study-dc5da.appspot.com",
+            messagingSenderId: "434989319675",
+            appId: "1:434989319675:web:023808d5286aabe7db775e",
+            measurementId: "G-7Q9DPPXMLN"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+    </script>
+</head>
+
+    <h2>인증이 완료되었습니다.</h2>
+    
+
+<body>
+    <script>
+        // 현재 페이지가 리다이렉트 주소와 같은지 확인
+        if (firebase.auth().isSignInWithEmailLink(location.href)) {
+            // localStorage에 저장된 이메일 꺼내기
+            var email = localStorage.getItem('emailForSignIn');
+
+            // The client SDK will parse the code from the link for you.
+            firebase.auth().signInWithEmailLink(email, location.href)
+                .then((result) => {
+                    // Clear email from storage.
+                    localStorage.removeItem('emailForSignIn');
+                    // You can access the new user via result.user
+                    console.log(result.user);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+
+        location.href = './회원가입.html'
+    </script>
+
+</body>
+
+</html>

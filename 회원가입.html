@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공용도서관 회원가입</title>
+
+    <!-- firebase 라이브러리 CDN 링크로 가져오기 -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+    <!-- firebase 개인 SDK 가져오기 -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDfVwL3nAnUhrjCVLIEFs5UDYtZVmZBnVA",
+            authDomain: "fir-study-dc5da.firebaseapp.com",
+            projectId: "fir-study-dc5da",
+            storageBucket: "fir-study-dc5da.appspot.com",
+            messagingSenderId: "434989319675",
+            appId: "1:434989319675:web:023808d5286aabe7db775e",
+            measurementId: "G-7Q9DPPXMLN"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <style>
+        div {
+            border: 0px solid black;
+        }
+
+        .explain-box {
+            width: 1300px;
+            display: flex;
+            position: fixed;
+            justify-content: space-between;
+            background-color: white;
+        }
+
+        .homep {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .homepImg {
+            width: 100px;
+            height: 50px;
+        }
+
+        .homepNm {
+            text-decoration: none;
+            font-size: 20px;
+            color: black;
+        }
+
+        .tag {
+            display: flex;
+            align-items: center;
+        }
+
+        .drop-box {
+            position: relative;
+            padding: 20px;
+        }
+
+        .drop-box>a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+            font-size: 20px;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .dropdown {
+            visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, 0%);
+            background-color: white;
+            padding: 15px;
+
+            width: 110px;
+            border: 1px solid #EEEEEE;
+            box-shadow: 2px 2px 2px 2px #DDDDDD;
+        }
+
+        .dropdown>a {
+            text-decoration: none;
+        }
+
+        .drop-box:hover>.dropdown {
+            visibility: visible;
+        }
+
+        .head {
+            height: 100px;
+        }
+
+        input {
+            font-size: 20px;
+        }
+
+        .signUp-container {
+            width: 500px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #signUpLogo {
+            width: 200px;
+            cursor: pointer;
+        }
+
+        .signUp-box {
+            margin-top: 20px;
+            border: 1px solid gray;
+            border-radius: 10px;
+        }
+
+        .inputText {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 14px;
+            width: 250px;
+        }
+
+        .inputSignUpId {
+            width: 100%;
+        }
+
+        .border-under {
+            border-top: 0;
+            border-left: 0;
+            border-right: 0;
+            margin-bottom: 15px;
+        }
+
+        .inputSignUpPw {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        #signUpBtn {
+            width: 100%;
+            height: 30px;
+            background-color: aqua;
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+
+        #sendMsgBtn,
+        #checkAuthNumBtn {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="signUp-container">
+        <div class="explain-box">
+            <div class="homep">
+                <img class="homepImg" src="./logo.png" alt="">
+                <a class="homepNm" href="./메인화면.html">공용도서관</a>
+            </div>
+
+            <div class="tag">
+                <div class="drop-box">
+                    <a href="#">도서관 안내</a>
+                    <div class="dropdown">
+                        <a href="./인사말.html">인사말</a>
+                        <a href="./연혁.html">연혁</a>
+                        <a href="./찾아오시는길.html">찾아오시는 길</a>
+                    </div>
+                </div>
+                <div class="drop-box">
+                    <a href="#">다양한 활동들</a>
+                    <div class="dropdown">
+                        <a href="./주변도서관.html">내 주변 도서관</a>
+                        <a href="./독후감작성.html">독후감 작성</a>
+                    </div>
+                </div>
+                <div class="drop-box">
+                    <a href="#">자료실</a>
+                    <div class="dropdown">
+                        <a href="./자료실.html">책 검색</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="head"></div>
+        <div>
+            <img id="signUpLogo" src="./logo.png" href="#">
+        </div>
+        <div class="signUp-box">
+            <div class="inputText">
+                <div class="inputSignUpId">
+                    <input class="border-under" id="signUpId" type="text" placeholder="아이디">
+                </div>
+                <div class="inputSignUpPw">
+                    <input class="border-under" id="signUpPw1" type="password" placeholder="비밀번호">
+                    <input class="border-under" id="signUpPw2" type="password" placeholder="비밀번호 재입력">
+                </div>
+                <div>
+                    <input class="border-under" id="signUpNickNm" type="text" placeholder="닉네임">
+                </div>
+                <div>
+                    <input class="border-under" id="inputPhone" type="text" placeholder="휴대폰 번호">
+                    <button id="sendMsgBtn">인증문자 전송</button>
+                </div>
+                <div>
+                    <input class="border-under" id="inputAuthNum" type="text" placeholder="인증번호">
+                    <button id="checkAuthNumBtn">인증번호 확인</button>
+                </div>
+            </div>
+            <div>
+                <button id="signUpBtn">회원가입</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const db = firebase.firestore();
+
+        firebase.auth().languageCode = 'ko';
+
+        recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sendMsgBtn', {
+            'size': 'invisible',
+            'callback': (response) => {
+                onSignInSubmit();
+            }
+        });
+
+        document.getElementById('sendMsgBtn').addEventListener('click', () => {
+            let v_inputPhone = document.getElementById('inputPhone').value;
+            console.log(v_inputPhone);
+
+            const phoneNumber = "+82" + v_inputPhone;
+            const appVerifier = window.recaptchaVerifier;
+            firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
+                .then((confirmationResult) => {
+                    window.confirmationResult = confirmationResult;
+                    console.log(confirmationResult);
+                }).catch((error) => {
+                    console.log('SMS 전송 실패');
+                });
+        })
+
+        document.getElementById('checkAuthNumBtn').addEventListener('click', () => {
+            let v_inputAuthNum = document.getElementById('inputAuthNum').value;
+
+            console.log(v_inputAuthNum);
+
+            const code = v_inputAuthNum;
+            confirmationResult.confirm(code).then((result) => {
+                const user = result.user;
+                console.log(user)
+
+                alert('휴대폰 인증이 완료되었습니다.');
+
+                document.getElementById('signUpBtn').addEventListener('click', () => {
+                    let v_signUpId = document.getElementById('signUpId').value;
+                    let v_signUpPw1 = document.getElementById('signUpPw1').value;
+                    let v_signUpPw2 = document.getElementById('signUpPw2').value;
+                    let v_signUpNickNm = document.getElementById('signUpNickNm').value;
+
+                    if (v_signUpId == "") {
+                        alert("아이디를 입력해주세요")
+                    } else if (v_signUpPw1 == "" || v_signUpPw2 == "") {
+                        alert("비밀번호를 입력해주세요")
+                    } else if (v_signUpNickNm == "") {
+                        alert("닉네임을 입력해주세요")
+                    }
+
+                    if (v_signUpPw1 == v_signUpPw2 && v_signUpId
+                        && v_signUpPw1 && v_signUpNickNm) {
+                        let v_json = {};
+                        v_json['memId'] = v_signUpId;
+                        v_json['memPw'] = v_signUpPw1;
+                        v_json['memNickNm'] = v_signUpNickNm
+
+                        db.collection("Member").doc(v_signUpId).set(v_json)
+                            .then(() => {
+                                console.log("Document successfully written!");
+                                alert('회원가입이 완료되었습니다.')
+                                location.href = './로그인.html';
+                            })
+                            .catch((error) => {
+                                console.error("Error writing document: ", error);
+                            });
+                    } else {
+                        alert("비밀번호를 다시 확인해주세요")
+                    }
+                });
+            }).catch((error) => {
+                console.log('인증번호 실패')
+                alert('휴대폰 인증에 실패하셨습니다. 다시 요청해주세요')
+            });
+        })
+
+
+    </script>
+
+</body>
+
+</html>

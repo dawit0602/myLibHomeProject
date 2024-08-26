@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>글 내용보기</title>
+
+    <!-- firebase 라이브러리 CDN 링크로 가져오기 -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+    <!-- firebase 개인 SDK 가져오기 -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDfVwL3nAnUhrjCVLIEFs5UDYtZVmZBnVA",
+            authDomain: "fir-study-dc5da.firebaseapp.com",
+            projectId: "fir-study-dc5da",
+            storageBucket: "fir-study-dc5da.appspot.com",
+            messagingSenderId: "434989319675",
+            appId: "1:434989319675:web:023808d5286aabe7db775e",
+            measurementId: "G-7Q9DPPXMLN"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <style>
+        div{
+            border: 1px solid black;
+        }
+        .writen-container {
+            width: 800px;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .text-box-top {
+            width: 80%;
+            height: 20px;
+        }
+
+        .login-box {
+            width: 90%;
+            margin-top: 20px;
+            display: flex;
+            justify-content: end;
+        }
+
+        .nm-box{
+            margin-right: 5px;
+        }
+
+        .text-box-bottom {
+            width: 90%;
+            margin-top: 10px;
+            display: flex;
+        }
+
+        .btn-container {
+            width: 100%;
+            margin-top: 5px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn-box{
+            width: 200px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="writen-container">
+        <div class="text-box-top">
+            <span id="title"></span>
+        </div>
+        <div class="login-box">
+            <div class="nm-box">
+                <span id="regMemNm">닉네임: </span>
+            </div>
+            <div>
+                <span id="regDate">날짜: </span>
+            </div>
+        </div>
+        <div class="text-box-bottom">
+            <span id="regContent"></span>
+        </div>
+        <div class="btn-container">
+            <div class="btn-box">
+                <div id="updateBtn"></div>
+                <div id="deleteBtn"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let v_query = new URLSearchParams(location.search);
+        console.log(v_query)
+        let v_docId = v_query.get('id');
+        console.log(v_docId);
+
+        // 로그인 중인 유저정보 가져오기
+        let v_login = JSON.parse(sessionStorage.getItem('login'));
+        console.log(v_login)
+
+        // firebase firestore 의 board 컬렉션으로부터
+        // v_docId 에 대한 document 가져와서 화면에 그리기
+        // 06_DB로그인.html 참고
+        const db = firebase.firestore();
+
+        db.collection('Board').doc(v_docId).get()
+            .then((result) => {
+                let v_json = result.data();
+                console.log(v_json)
+                document.getElementById('title').innerHTML = v_json['title'];
+                // 게시글의 글제목을 title 태그에 반영
+                document.title = v_json['title'];
+                document.getElementById('regMemNm').innerHTML += v_json['memName'];
+                document.getElementById('regDate').innerHTML += v_json['date'];
+                document.getElementById('regContent').innerHTML = v_json['content'];
+
+                // 게시글의 작성자 id와 로그인 중인 유저의 id가 일치하면
+                // 화면에 글수정, 글삭제 버튼 추가
+                if (v_login && v_json['memId'] == v_login['memId']) {
+                    // 버튼에 클릭이벤트를 넣기 좋게 createElement 방식 사용
+                    let v_updateBtn = document.createElement('button');
+                    console.log(v_docId)    
+                    v_updateBtn.innerHTML = '수정하기';
+                    v_updateBtn.addEventListener('click', () => {
+                        location.href = "./글수정하기.html?id=" + v_docId;
+                    });
+
+                    document.getElementById('updateBtn').append(v_updateBtn)
+
+                    // 삭제버튼 추가
+                    let v_deleteBtn = document.createElement('button')
+                    v_deleteBtn.innerHTML = "삭제하기";
+                    v_deleteBtn.addEventListener('click', () => {
+                        if (confirm('정말로 삭제하시겠습니까?')) {
+                            f_delBoard();
+                        }
+                    });
+                    document.getElementById('deleteBtn').append(v_deleteBtn);
+                }
+            })
+            .catch((err) => {
+                console.log('에러발생', err)
+            })
+
+        function f_delBoard() {
+            db.collection('Board').doc(v_docId).delete()
+                .then(() => {
+                    location.replace('./독후감작성.html');
+                })
+        }
+    </script>
+</body>
+
+</html>

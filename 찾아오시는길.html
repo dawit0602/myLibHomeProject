@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>찾아오시는 길</title>
+
+    <style>
+        .map-container {
+            width: 1300px;
+            margin: auto;
+        }
+
+        .explain-box {
+            width: 1300px;
+            display: flex;
+            position: fixed;
+            justify-content: space-between;
+            background-color: #DDDDDD;
+        }
+
+        .homep {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .homepImg {
+            width: 100px;
+            height: 50px;
+        }
+
+        .homepNm {
+            text-decoration: none;
+            font-size: 20px;
+            color: black;
+        }
+
+        .tag {
+            display: flex;
+            align-items: center;
+        }
+
+        .drop-box {
+            position: relative;
+            padding: 20px;
+        }
+
+        .drop-box>a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+            font-size: 20px;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .dropdown {
+            visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, 0%);
+            background-color: white;
+            padding: 15px;
+
+            width: 110px;
+            border: 1px solid #EEEEEE;
+            box-shadow: 2px 2px 2px 2px #DDDDDD;
+        }
+
+        .dropdown>a {
+            text-decoration: none;
+        }
+
+        .drop-box:hover>.dropdown {
+            visibility: visible;
+        }
+
+        .login-box {
+            width: 10%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .head {
+            height: 100px;
+        }
+
+        .title {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px;
+            border-bottom: 1px solid #DDDDDD;
+        }
+
+        .suv-title {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: gray;
+        }
+
+        .suv-title>div>a {
+            text-decoration: none;
+            color: gray;
+        }
+
+        #mainImg {
+            margin-right: 5px;
+            width: 20px;
+        }
+
+        .adress-container {
+            display: flex;
+            justify-content: center;
+            border: 1px solid gray;
+            box-shadow: 2px 2px 2px 2px #CCCCCC;
+        }
+
+        .adress-box {
+            width: 640px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #mapImg {
+            width: 200px;
+        }
+
+        .ad-text {
+            font-size: 20px;
+            font-weight: bold;
+            padding: 5px;
+        }
+
+        .adress {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .map-box {
+            border: 1px solid gray;
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="map-container">
+        <div class="explain-box">
+            <div class="homep">
+                <img class="homepImg" src="./logo.png" alt="">
+                <a class="homepNm" href="./메인화면.html">공용도서관</a>
+            </div>
+
+            <div class="tag">
+                <div class="drop-box">
+                    <a href="#">도서관 안내</a>
+                    <div class="dropdown">
+                        <a href="./인사말.html">인사말</a>
+                        <a href="./연혁.html">연혁</a>
+                        <a href="./찾아오시는길.html">찾아오시는 길</a>
+                    </div>
+                </div>
+                <div class="drop-box">
+                    <a href="#">다양한 활동들</a>
+                    <div class="dropdown">
+                        <a href="./주변도서관.html">내 주변 도서관</a>
+                        <a href="./독후감작성.html">독후감 작성</a>
+                    </div>
+                </div>
+                <div class="drop-box">
+                    <a href="#">자료실</a>
+                    <div class="dropdown">
+                        <a href="./자료실.html">책 검색</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="login-box">
+                <div>
+                    <a id="goLogin" href="./로그인.html">로그인/회원가입</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="head"></div>
+        <div class="title">
+            <h3>찾아오시는 길</h3>
+            <div class="suv-title">
+                <a href="./메인화면.html">
+                    <img id="mainImg" src="./home.png" alt="">
+                </a>
+                <div>
+                    <span>></span>
+                    <a href="./인사말.html">도서관 안내</a>
+                </div>
+                <div>
+                    <span>></span>
+                    <a href="./찾아오시는길.html">연혁</a>
+                </div>
+            </div>
+        </div>
+        <div class="adress-container">
+            <div class="adress-box">
+                <div>
+                    <img id="mapImg" src="https://cdn-icons-png.flaticon.com/256/854/854878.png" alt="">
+                </div>
+                <div class="adress">
+                    <span class="ad-text">도로명 주소: 서울 서초구 반포대로 201</span>
+                    <span class="ad-text">지번: 반포동 산 60-1</span>
+                    <span class="ad-text">영업일: 월~일 09:00 ~ 18:00</span>
+                    <span class="ad-text">전화번호: 02-590-0500</span>
+                </div>
+            </div>
+        </div>
+        <br>
+        <!-- * 카카오맵 - 지도퍼가기 -->
+        <!-- 1. 지도 노드 -->
+
+        <div class="map-box">
+            <div id="daumRoughmapContainer1724113034724" class="root_daum_roughmap root_daum_roughmap_landing"></div>
+
+            <!--
+	2. 설치 스크립트
+	* 지도 퍼가기 서비스를 2개 이상 넣을 경우, 설치 스크립트는 하나만 삽입합니다.
+-->
+            <script charset="UTF-8" class="daum_roughmap_loader_script"
+                src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
+
+            <!-- 3. 실행 스크립트 -->
+            <script charset="UTF-8">
+                new daum.roughmap.Lander({
+                    "timestamp": "1724113034724",
+                    "key": "2kdy8",
+                    "mapWidth": "640",
+                    "mapHeight": "360"
+                }).render();
+            </script>
+        </div>
+    </div>
+    <script>
+        let v_login = JSON.parse(sessionStorage.getItem('login'));
+
+        let v_goLogin = document.getElementById('goLogin');
+
+        if (v_login) {
+            v_goLogin.innerHTML = "로그아웃";
+            v_goLogin.href = './로그아웃.html';
+
+            v_goLogin.innerHTML = v_login['memNickNm'] + ' 님';
+
+            document.getElementById('goLogin').addEventListener('click', () => {
+                v_goLogin.innerHTML = "로그인"
+                v_goLogin.href = "./로그인.html"
+
+                sessionStorage.removeItem('login')
+            });
+        }
+    </script>
+</body>
+
+</html>
