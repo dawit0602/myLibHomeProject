@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>글 작성하기</title>
+
+    <!-- firebase 라이브러리 CDN 링크로 가져오기 -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+    <!-- firebase 개인 SDK 가져오기 -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDfVwL3nAnUhrjCVLIEFs5UDYtZVmZBnVA",
+            authDomain: "fir-study-dc5da.firebaseapp.com",
+            projectId: "fir-study-dc5da",
+            storageBucket: "fir-study-dc5da.appspot.com",
+            messagingSenderId: "434989319675",
+            appId: "1:434989319675:web:023808d5286aabe7db775e",
+            measurementId: "G-7Q9DPPXMLN"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <style>
+        .write-container {
+            width: 800px;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .text-box-top {
+            width: 80%;
+            height: 20px;
+        }
+
+        #inputTitle {
+            width: 100%;
+            height: 100%;
+            font-size: 18px;
+        }
+
+        .nmBox{
+            width: 90%;
+            margin-top: 20px;
+            display: flex;
+            justify-content: end;
+        }
+
+        #memNm{
+            background-color: yellow;
+        }
+
+        .text-box-bottom {
+            width: 90%;
+            margin-top: 10px;
+            display: flex;
+        }
+
+        #inputContent {
+            width: 100%;
+            height: 300px;
+        }
+
+        .btn-box {
+            width: 100%;
+            margin-top: 5px;
+            display: flex;
+            justify-content: end;
+        }
+
+        #regBtn {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="write-container">
+        <div class="text-box-top">
+            <input id="inputTitle" type="text" placeholder="글 제목">
+        </div>
+        <div class="nmBox">
+            <span id="memNm">닉네임: </span>
+        </div>
+        <div class="text-box-bottom">
+            <input id="inputContent" type="text">
+        </div>
+        <div class="btn-box">
+            <button id="regBtn">등록</button>
+        </div>
+    </div>
+
+    <script src="./common.js"></script>
+    <script>
+        // 게시글 데이터 구조 정의
+        // 필드변수: 글제목, 글내용, 작성자id, 작성자name, 작성일
+
+        let v_login = JSON.parse(sessionStorage.getItem('login'));
+        let v_memNm = document.querySelector('#memNm');
+
+        const db = firebase.firestore();
+
+        v_memNm.innerHTML += v_login['memId']
+
+
+        document.getElementById('regBtn').addEventListener('click', () => {
+            let v_inputTitle = document.getElementById('inputTitle').value;
+            let v_inputContent = document.getElementById('inputContent').value;
+
+            console.log(v_inputTitle);
+            console.log(v_inputContent);
+            console.log(v_login['memId']);
+            console.log(v_login['memNickNm']);
+            // MM-dd HH:mm 형태의 날짜 가져오기
+            console.log(makeBoardDate());
+
+            // firestore에 board collection 추가하고 게시글 데이터(document) 추가
+            // 회원가입때는 추가되는 데이터(document)에 id를 부여해줬음
+            // board는 id를 직접 주기가 굉장히 애매함 -> id를 안줌
+            // -> 알아서 랜덤 unique하게 생성됨
+            let v_json = {};
+            v_json['title'] = v_inputTitle;
+            v_json['content'] = v_inputContent;
+            v_json['memId'] = v_login['memId'];
+            v_json['memName'] = v_login['memNickNm'];
+            v_json['date'] = makeBoardDate();
+
+            // document의 id를 지정하지 않고 데이터 추가하기
+            db.collection('Board').add(v_json)
+                .then((result) => {
+                    console.log(result);
+
+                    // 글목록 페이지로 이동
+                    location.replace('./독후감작성.html');
+                })
+                .catch((err) => {
+                    console.log('에러발생', err);
+                });
+
+                
+        });
+
+    </script>
+</body>
+
+</html>

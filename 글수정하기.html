@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>글 수정하기</title>
+
+    <!-- firebase 라이브러리 CDN 링크로 가져오기 -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+    <!-- firebase 개인 SDK 가져오기 -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDfVwL3nAnUhrjCVLIEFs5UDYtZVmZBnVA",
+            authDomain: "fir-study-dc5da.firebaseapp.com",
+            projectId: "fir-study-dc5da",
+            storageBucket: "fir-study-dc5da.appspot.com",
+            messagingSenderId: "434989319675",
+            appId: "1:434989319675:web:023808d5286aabe7db775e",
+            measurementId: "G-7Q9DPPXMLN"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <style>
+        .write-container {
+            width: 800px;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .text-box-top {
+            width: 80%;
+            height: 20px;
+        }
+
+        #inputTitle {
+            width: 100%;
+            height: 100%;
+            font-size: 18px;
+        }
+
+        .login-box {
+            width: 90%;
+            margin-top: 20px;
+            display: flex;
+            justify-content: end;
+        }
+
+        .nm-box {
+            margin-right: 5px;
+        }
+
+        #memNm {
+            background-color: yellow;
+        }
+
+        .text-box-bottom {
+            width: 90%;
+            margin-top: 10px;
+            display: flex;
+        }
+
+        #inputContent {
+            width: 100%;
+            height: 300px;
+        }
+
+        .btn-container {
+            width: 100%;
+            margin-top: 5px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn-box {
+            width: 200px;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="write-container">
+        <div class="text-box-top">
+            <textarea id="inputTitle"></textarea>
+        </div>
+        <div class="login-box">
+            <div class="nm-box">
+                <span id="regMemNm">닉네임: </span>
+            </div>
+            <div>
+                <span id="regDate">날짜: </span>
+            </div>
+        </div>
+        <div class="text-box-bottom">
+            <textarea id="inputContent"></textarea>
+        </div>
+        <div class="btn-container">
+            <div class="btn-box">
+                <button id="updateBtn">수정하기</button>
+                <button id="cancleBtn">취소하기</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./common.js"></script>
+    <script>
+        let v_query = new URLSearchParams(location.search);
+        let v_docId = v_query.get('id');
+        console.log(v_docId);
+
+        const db = firebase.firestore();
+
+        db.collection('Board').doc(v_docId).get()
+            .then((result) => {
+                let v_json = result.data();
+                console.log(v_json)
+
+                document.getElementById('inputTitle').value = v_json['title'];
+                document.getElementById('regMemNm').innerHTML = v_json['memName'];
+                document.getElementById('regDate').innerHTML = v_json['date'];
+                document.getElementById('inputContent').innerHTML = v_json['content'];
+            })
+            .catch((err) => {
+                console.log('에러발생', err)
+            });
+
+        document.getElementById('cancleBtn').addEventListener('click', () => {
+            history.back();
+        });
+
+        window.onbeforeunload = function () {
+            return "바이바이";
+        }
+
+        document.getElementById('updateBtn').addEventListener('click', () => {
+            let v_inputTitle = document.getElementById('inputTitle').value;
+            let v_inputContent = document.getElementById('inputContent').value;
+            let v_date = makeBoardDate();
+
+            let v_json = {};
+            console.log(v_json)
+            v_json['title'] = v_inputTitle;
+            v_json['content'] = v_inputContent;
+            v_json['date'] = v_date;
+            console.log(v_docId)
+
+            db.collection('Board').doc(v_docId).update(v_json)
+                .then(() => {
+                    onbeforeunload = null;
+                    console.log(v_docId)
+
+                    location.replace('./글내용보기.html?id=' + v_docId)
+                })
+                .catch((err) => {
+                    console.log('에러발생' + err)
+                })
+        })
+    </script>
+
+</body>
+
+</html>
